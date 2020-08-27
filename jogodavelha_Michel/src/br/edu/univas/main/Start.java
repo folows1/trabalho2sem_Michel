@@ -2,8 +2,8 @@ package br.edu.univas.main;
 
 import java.util.Scanner;
 
-public class StartApp {
-	static String[][] jogo = new String[][] { { " ", " ", " " }, { " ", " ", " " }, { " ", " ", " " } };;
+public class Start {
+	static String[][] jogo = new String[3][3];
 	static String[][] posicoes = new String[][] { { "1a", "1b", "1c" }, { "2a", "2b", "2c" }, { "3a", "3b", "3c" } };
 
 	public static void main(String[] args) {
@@ -12,44 +12,50 @@ public class StartApp {
 		String player1 = l.nextLine();
 		System.out.println("Digite o nome do segundo jogador(O): ");
 		String player2 = l.nextLine();
-		jogodaVelha(player1, player2, l);
+		int r;
+		do {
+			limparJogo();
+			jogodaVelha(player1, player2, l);
+			System.out.println("Jogar novamente? Digite 1 para SIM.");
+			r = l.nextInt();
+			l.nextLine();
+		} while (r == 1);
+		l.close();
 	}
 
 	public static void jogodaVelha(String nome1, String nome2, Scanner l) {
 		int numjogadas = 0;
 		do {
 			numjogadas++;
-			System.out.println("---- Jogada Nº " + numjogadas + " (X) do Jogador  " + nome1 + " ----");
-			String jogadaX = l.nextLine();
-			realizarjogadaX(jogadaX);
-			numjogadas = verificarJogo(numjogadas);
-			if (numjogadas == 9 || numjogadas == 10 || numjogadas == 11 || numjogadas == 12) {
-				break;
+			if(numjogadas%2 != 0) {
+				System.out.println(numjogadas+". Turno do jogador(X) "+nome1);
+				String jogada = l.nextLine();
+				realizarjogada(jogada,numjogadas);
+			}else {
+				System.out.println(numjogadas+". Turno do jogador(O) "+nome2);
+				String jogada = l.nextLine();
+				realizarjogada(jogada,numjogadas);
 			}
-			numjogadas++;
-			System.out.println("---- Jogada Nº " + numjogadas + " (O) do Jogador  " + nome2 + " ----");
-			String jogadaO = l.nextLine();
-			realizarjogadaO(jogadaO);
 			numjogadas = verificarJogo(numjogadas);
-		} while (numjogadas < 10);
+		} while (numjogadas < 9);
 		resultadoFinal(numjogadas, nome1, nome2);
 	}
 
-	public static void realizarjogadaX(String jogadaX) {
+	public static void realizarjogada(String jogada, int numjogadas) {
+		if(numjogadas % 2 != 0) {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				if (posicoes[i][j].equals(jogadaX)) {
+				if (posicoes[i][j].equals(jogada)) {
 					jogo[i][j] = "X";
 				}
 			}
 		}
-	}
-
-	public static void realizarjogadaO(String jogadaO) {
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				if (posicoes[i][j].equals(jogadaO)) {
-					jogo[i][j] = "O";
+		}else {
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 3; j++) {
+					if (posicoes[i][j].equals(jogada)) {
+						jogo[i][j] = "O";
+					}
 				}
 			}
 		}
@@ -126,5 +132,13 @@ public class StartApp {
 		System.out.println(jogo[1][0] + " | " + jogo[1][1] + " | " + jogo[1][2]);
 		System.out.println("---------");
 		System.out.println(jogo[2][0] + " | " + jogo[2][1] + " | " + jogo[2][2]);
+	}
+
+	public static void limparJogo() {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				jogo[i][j] = " ";
+			}
+		}
 	}
 }
