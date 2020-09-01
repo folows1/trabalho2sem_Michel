@@ -1,21 +1,20 @@
 package br.edu.univas.main;
 
 import java.util.Scanner;
+import java.util.Random;
 
-public class Start {
+public class StartBot {
 	static String[][] jogo = new String[3][3];
 	static String[][] posicoes = new String[][] { { "1a", "1b", "1c" }, { "2a", "2b", "2c" }, { "3a", "3b", "3c" } };
-	static Scanner l = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		System.out.println("Digite o nome do primeiro jogador(X):");
+		Scanner l = new Scanner(System.in);
+		System.out.println("Digite o nome do jogador(X):");
 		String player1 = l.nextLine();
-		System.out.println("Digite o nome do segundo jogador(O): ");
-		String player2 = l.nextLine();
 		int r;
 		do {
 			limparJogo();
-			jogodaVelha(player1, player2);
+			jogodaVelha(player1, l);
 			System.out.println("Jogar novamente? Digite 1 para SIM.");
 			r = l.nextInt();
 			l.nextLine();
@@ -23,25 +22,26 @@ public class Start {
 		l.close();
 	}
 
-	public static void jogodaVelha(String nome1, String nome2) {
+	public static void jogodaVelha(String nome1, Scanner l) {
 		int numjogadas = 0;
 		do {
 			numjogadas++;
 			if (numjogadas % 2 != 0) {
-				realizarJogadaX(numjogadas, nome1);
+				System.out.println(numjogadas + ". Turno do jogador(X) " + nome1);
+				String jogada = l.nextLine();
+				realizarJogadaX(jogada);
 			} else {
-				realizarJogadaO(numjogadas, nome2);
+				System.out.println(numjogadas + ". Turno do BOT (O) ");
+				realizarJogada_Bot(numjogadas);
+				System.out.println("---- JOGO ----");
+				imprimirJogo();
 			}
-			System.out.println("*** JOGO ***");
-			imprimirJogo();
 			numjogadas = verificarJogo(numjogadas);
 		} while (numjogadas < 9);
-		resultadoFinal(numjogadas, nome1, nome2);
+		resultadoFinal(numjogadas, nome1);
 	}
 
-	public static void realizarJogadaX(int numjogadas, String nome1) {
-		System.out.println(numjogadas + ". Turno do jogador(X) " + nome1);
-		String jogada = l.nextLine();
+	public static void realizarJogadaX(String jogada) {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				if (posicoes[i][j].equals(jogada)) {
@@ -49,18 +49,41 @@ public class Start {
 				}
 			}
 		}
-	}
 
-	public static void realizarJogadaO(int numjogadas, String nome2) {
-		System.out.println(numjogadas + ". Turno do jogador(O) " + nome2);
-		String jogada = l.nextLine();
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				if (posicoes[i][j].equals(jogada)) {
-					jogo[i][j] = "O";
-				}
-			}
+	}
+	public static void realizarJogada_Bot(int numjogadas) {
+		Random random = new Random();
+		do {
+		int jogadaBOT = random.nextInt(9) + 1;
+		if(jogadaBOT == 1 && jogo[0][0] == " ") {
+			jogo[0][0]="O";
+			break;
+		}else if(jogadaBOT == 2 && jogo[0][1] == " " ) {
+			jogo[0][1]="O";
+			break;
+		}else if(jogadaBOT == 3 && jogo[0][2] == " " ) {
+			jogo[0][2]="O";
+			break;
+		}else if(jogadaBOT == 4 && jogo[1][0] == " " ) {
+			jogo[1][0]="O";
+			break;
+		}else if(jogadaBOT == 5 && jogo[1][1] == " " ) {
+			jogo[1][1]="O";
+			break;
+		}else if(jogadaBOT == 6 && jogo[1][2] == " " ) {
+			jogo[1][2]="O";
+			break;
+		}else if(jogadaBOT == 7 && jogo[2][0] == " " ) {
+			jogo[2][0]="O";
+			break;
+		}else if(jogadaBOT == 8 && jogo[2][1] == " " ) {
+			jogo[2][1]="O";
+			break;
+		}else if(jogadaBOT == 9 && jogo[2][2] == " " ) {
+			jogo[2][2]="O";
+			break;
 		}
+		}while(true);
 	}
 
 	public static int verificarJogo(int numjogadas) {
@@ -116,9 +139,9 @@ public class Start {
 
 	}
 
-	public static void resultadoFinal(int numjogadas, String nome1, String nome2) {
+	public static void resultadoFinal(int numjogadas, String nome1) {
 		if (numjogadas == 12) {
-			System.out.println("RESULTADO: (O) " + nome2 + " VENCEU!");
+			System.out.println("RESULTADO: MÁQUINA (O) " + " VENCEU!");
 		} else if (numjogadas == 11) {
 			System.out.println("RESULTADO: (X) " + nome1 + " VENCEU!");
 		} else {
