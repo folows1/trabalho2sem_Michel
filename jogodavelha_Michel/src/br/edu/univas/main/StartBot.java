@@ -140,12 +140,13 @@ public class StartBot {
 	}
 
 	public static void resultadoFinal(int numjogadas, String nome1) {
+		imprimirJogo();
 		if (numjogadas == 12) {
-			System.out.println("RESULTADO: MÁQUINA (O) " + " VENCEU!");
+			System.out.println("* RESULTADO: MÁQUINA (O) " + " VENCEU! *");
 		} else if (numjogadas == 11) {
-			System.out.println("RESULTADO: (X) " + nome1 + " VENCEU!");
+			System.out.println("* RESULTADO: (X) " + nome1 + " VENCEU! *");
 		} else {
-			System.out.println("RESULTADO: Jogo deu VELHA!");
+			System.out.println("* RESULTADO: Jogo deu VELHA! * ");
 		}
 	}
 
